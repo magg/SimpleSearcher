@@ -1,0 +1,71 @@
+buildscript {
+
+    repositories {
+        mavenCentral()
+    }
+
+}
+
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'application'
+
+
+group = 'com.example.searcher'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 11
+
+
+repositories {
+    mavenCentral()
+}
+
+
+mainClassName = 'com.example.searcher.Searcher'
+version = '0.0.1-SNAPSHOT'
+
+jar {
+
+    manifest {
+        attributes 'Implementation-Title': 'Simple Searcher', 'Implementation-Version': version
+        attributes 'Main-Class': mainClassName
+
+    }
+}
+
+dependencies {
+
+    testCompile 'junit:junit:4.12'
+
+
+
+}
+
+
+eclipse {
+    classpath {
+        containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
+        containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
+    }
+}
+
+
+allprojects {
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        }
+    }
+}
+
+
+test {
+    //we want display the following test events
+    testLogging {
+        events "PASSED", "STARTED", "FAILED", "SKIPPED"
+    }
+
+    testLogging.showStandardStreams = true
+}
